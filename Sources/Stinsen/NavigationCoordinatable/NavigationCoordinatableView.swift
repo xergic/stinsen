@@ -7,7 +7,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
     private let id: Int
     private let router: NavigationRouter<T>
     @StateObject var presentationHelper: PresentationHelper<T>
-    @StateObject var root: NavigationRoot
+    @ObservedObject var root: NavigationRoot
     
     var start: AnyView?
 
@@ -112,7 +112,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
             coordinator.setupRoot()
         }
         
-        self._root = StateObject(wrappedValue: coordinator.stack.root)
+        self.root = coordinator.stack.root
 
         RouterStore.shared.store(router: router)
         
