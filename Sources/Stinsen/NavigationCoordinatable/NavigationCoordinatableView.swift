@@ -6,7 +6,7 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
     var coordinator: T
     private let id: Int
     private let router: NavigationRouter<T>
-    @StateObject var presentationHelper: PresentationHelper<T>
+    @ObservedObject var presentationHelper: PresentationHelper<T>
     @StateObject var root: NavigationRoot
     
     var start: AnyView?
@@ -97,11 +97,10 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
         self.id = id
         self.coordinator = coordinator
         
-        let helper = PresentationHelper(
+        self.presentationHelper = PresentationHelper(
             id: self.id,
             coordinator: coordinator
         )
-        self._presentationHelper = StateObject(wrappedValue: helper)
         
         self.router = NavigationRouter(
             id: id,
