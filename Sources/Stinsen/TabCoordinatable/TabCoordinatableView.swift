@@ -4,7 +4,7 @@ import SwiftUI
 struct TabCoordinatableView<T: TabCoordinatable, U: View>: View {
     private var coordinator: T
     private let router: TabRouter<T>
-    @ObservedObject var child: TabChild
+    @@StateObject var child: TabChild
     private var customize: (AnyView) -> U
     private var views: [AnyView]
     
@@ -32,7 +32,7 @@ struct TabCoordinatableView<T: TabCoordinatable, U: View>: View {
         self.router = TabRouter(coordinator: coordinator.routerStorable)
         RouterStore.shared.store(router: router)
         self.customize = customize
-        self.child = coordinator.child
+        self._child = StateObject(wrappedValue: coordinator.child)
         
         if coordinator.child.allItems == nil {
             coordinator.setupAllTabs()
